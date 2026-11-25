@@ -1,0 +1,3 @@
+name: multicloud-networking
+runtime: python
+description: Azure networking microservice — Resource Group, VNet, NSG, Key Pair, Virtual Machine
