@@ -1,8 +1,9 @@
 import os
 from dotenv import load_dotenv
 load_dotenv()
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 
+from app.utils.auth import get_current_user
 from app.routes.location import router as location_router
 from app.routes.resource_group import router as resource_group_router
 from app.routes.vnet import router as vnet_router
@@ -41,7 +42,7 @@ if _passphrase is None:
 os.environ["PULUMI_CONFIG_PASSPHRASE"] = _passphrase
 
 app = FastAPI(
-    title="MultiCloud Edge — Azure Networking Service",
+    title="MultiCloud — Azure Networking Service",
     description=(
         "Microservice for provisioning Azure networking resources via the Pulumi Automation API. "
         "Each resource type (Resource Group, VNet, Subnet, NSG, Route Table, Route, NAT Gateway, "
@@ -50,17 +51,17 @@ app = FastAPI(
     version="2.0.0",
 )
 
-app.include_router(location_router)
-app.include_router(resource_group_router)
-app.include_router(vnet_router)
-app.include_router(subnet_router)
-app.include_router(nsg_router)
-app.include_router(route_table_router)
-app.include_router(route_router)
-app.include_router(nat_gateway_router)
-app.include_router(key_pair_router)
-app.include_router(virtual_machine_router)
-app.include_router(images_router)
+app.include_router(location_router, dependencies=[Depends(get_current_user)])
+app.include_router(resource_group_router, dependencies=[Depends(get_current_user)])
+app.include_router(vnet_router, dependencies=[Depends(get_current_user)])
+app.include_router(subnet_router, dependencies=[Depends(get_current_user)])
+app.include_router(nsg_router, dependencies=[Depends(get_current_user)])
+app.include_router(route_table_router, dependencies=[Depends(get_current_user)])
+app.include_router(route_router, dependencies=[Depends(get_current_user)])
+app.include_router(nat_gateway_router, dependencies=[Depends(get_current_user)])
+app.include_router(key_pair_router, dependencies=[Depends(get_current_user)])
+app.include_router(virtual_machine_router, dependencies=[Depends(get_current_user)])
+app.include_router(images_router, dependencies=[Depends(get_current_user)])
 
 
 @app.get("/", tags=["Root"])

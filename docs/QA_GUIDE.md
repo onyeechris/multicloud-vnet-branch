@@ -1,6 +1,8 @@
-# MultiCloud Edge — Azure Networking Service (QA Guide)
+# MultiCloud — Azure Networking Service (QA Guide)
 
-> **Branch:** `vnet-branch`
+> **Authentication:** every endpoint except `/` and `/health` requires `Authorization: Bearer <JWT>`. See the top-level README.
+
+> **Note:** every request must carry `Authorization: Bearer <JWT>` (see the top-level README).
 > **Scope:** Azure-only. Provisions **Resource Group → VNet → NSG → Key Pair → Virtual Machine** via the Pulumi Automation API, fronted by FastAPI.
 > **Base URL:** `http://<host>:8000`
 > **Swagger UI (live test):** `http://<host>:8000/docs`
